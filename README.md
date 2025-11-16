@@ -10,78 +10,128 @@
 
 #Artweb
 
-Artweb es una aplicación web desarrollada con Laravel (backend) y Vue + Inertia (frontend).
-El objetivo principal de este módulo es implementar un sistema de autenticación y un CRUD completo utilizando el patrón MVC, como base para una futura plataforma artística más completa.
+Artweb es una aplicación web desarrollada con Laravel 10 (backend) y Vue 3 + Inertia.js (frontend). Implementa autenticación, roles, un panel de usuario, un panel administrativo, validaciones en el servidor y un sistema completo de CRUD basado en MVC. Este proyecto constituye la base inicial para una futura plataforma artística con mayores funcionalidades.
 
-# Link Video 
+#Video demostrativo
 
-En el siguiente video se puede ver el funcionamiento general de la aplicación, incluyendo el login, el registro y el CRUD de intereses artísticos:
-
-#https://youtu.be/BEMvlJ9Q9zQ
+https://youtu.be/ZB-MVubuQiY
 
 #Descripción del proyecto
 
-Artweb busca ser una plataforma para artistas, usuarios y organizadores de eventos culturales.
-En esta primera versión se implementa la base del proyecto:
+El objetivo principal del proyecto es implementar un sistema funcional que utilice el patrón MVC, autenticación con roles y un manejo adecuado de datos sensibles en el Back-End.
+Dentro de los requerimientos académicos solicitados se incluyó:
 
-Sistema de autenticación de usuarios (login, registro, logout).
+--  Validar datos sensibles directamente en el servidor, no solo con JavaScript.
+     En este proyecto se valida de forma estricta que:
 
- * Rutas protegidas: solo usuarios autenticados pueden acceder a ciertas secciones.
+-- La edad ingresada sea válida.
 
- * Perfil de usuario.
+-- El correo electrónico sea único antes de almacenarlo en la base de datos.
 
-*  CRUD de "intereses artísticos".
+-- Esto evita ingreso incorrecto o manipulación desde el Front-End.
 
-* Aplicación del patrón MVC.
+Cuando existe una relación entre tablas, no se debe permitir ingresar manualmente el ID de la relación, sino seleccionar mediante dropdown dinámico.
+Por ejemplo, las opciones de interés dependen de una categoría.
+El usuario administrador primero selecciona una categoría, y automáticamente se cargan las opciones relacionadas para evitar errores y garantizar integridad de datos.
 
-* Uso de Laravel como backend y Vue con Inertia como frontend SPA.
-
-Este módulo será la base para futuras funcionalidades como galería de obras, estadísticas, recomendaciones personalizadas y gestión de eventos.
+El sistema también separa  el acceso del administrador del de un usuario normal:
+un administrador nunca accede al dashboard normal, sino a su panel administrativo personalizado.
 
 #Tecnologías utilizadas
 
-Backend: Laravel 10
-Frontend: Vue 3 + Inertia.js
-Autenticación: Breeze
-Estilos: Tailwind CSS (personalizados con paleta elegante)
-Base de datos: MySQL / MariaDB
-Patrón: MVC (Modelo - Vista - Controlador)
+-- Laravel 10
 
-#Funcionalidades implementadas
+-- Vue 3
 
-* Autenticación
+-- Inertia.js
 
-* Registro de usuario.
+-- Laravel Breeze
 
-* Inicio de sesión.
+-- Tailwind CSS
 
-* Cierre de sesión.
+-- MySQL / MariaDB
 
-* Rutas protegidas mediante middleware.
+-- Patrón MVC (Model–View–Controller)
 
-* Redirección automática al login si no estás autenticado.
+#Modelos implementados
 
-* CRUD de Intereses Artísticos
+Se utilizaron modelos de Laravel para representar las entidades principales del sistema:
 
-#Cada usuario puede guardar información como:
+-- User
 
-* Edad
+Contiene información básica del usuario.
 
-* Estilo artístico
+Incluye campo rol para distinguir entre usuario normal y administrador.
 
-* Fandom favorito
+Validación back-end:
 
-* Nivel de artista
+El correo debe ser único (unique:users,email).
 
-* Descripción personal
+Restricciones estándar de Laravel Breeze.
 
-#Operaciones disponibles:
+-- CategoriaInteres
 
-* Crear
+Representa las categorías principales (por ejemplo: Pintura, Música, Escultura).
 
-* Ver
+Relación:
 
-* Editar
+Una categoría tiene muchas opciones de interés (hasMany).
 
-* Eliminar
+-- OpcionInteres
+
+Representa opciones más específicas dentro de una categoría.
+
+Relación:
+
+Pertenece a una categoría (belongsTo).
+
+Se carga dinámicamente en formularios según la categoría seleccionada.
+
+-- Etiqueta
+
+Modelo simple para etiquetas administrables desde el panel del administrador.
+
+UserIntereses
+
+Contiene los intereses registrados por cada usuario.
+
+-- Validaciones:
+
+La edad debe ser un número válido y positivo.
+
+Otros campos se validan según las reglas del formulario.
+
+#Controladores implementados
+
+-- UserInteresesController
+
+CRUD completo para que el usuario gestione sus intereses.
+
+Manejo de validaciones y protección de rutas.
+
+-- CategoriaInteresController
+
+CRUD para el administrador.
+
+Evita ingreso manual de claves foráneas (solo se seleccionan desde dropdowns).
+
+-- OpcionInteresController
+
+Carga dinámica de opciones según la categoría.
+
+Validación en Back-End de la relación categoría → opción.
+
+-- EtiquetaController
+
+CRUD simple para etiquetas.
+
+-- AuthenticatedSessionController
+
+Controla inicio y cierre de sesión.
+
+Redirección basada en rol:
+
+Usuario normal → Dashboard de usuario.
+
+Administrador → Panel administrativo.
 
