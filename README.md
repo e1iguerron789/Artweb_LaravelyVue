@@ -14,7 +14,7 @@ Artweb es una aplicación web desarrollada con Laravel 10 (backend) y Vue 3 + In
 
 #Video demostrativo
 
-https://youtu.be/ZB-MVubuQiY
+https://youtu.be/LRE29Oz_J14
 
 #Descripción del proyecto
 
